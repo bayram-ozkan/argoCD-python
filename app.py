@@ -4,7 +4,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello():
-    greeting_message = "Merhaba ArgoCD v2"
+    greeting_message = "Merhaba ArgoCD v3"
     return render_template('index.html', message=greeting_message)
 
 if __name__ == '__main__':
