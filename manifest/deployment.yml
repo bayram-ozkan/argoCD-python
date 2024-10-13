@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: flaskapp
-        image: bayramozkan/argocd-python:v1.0
+        image: bayramozkan/flask-app:7
         ports:
         - containerPort: 5000
 ---
