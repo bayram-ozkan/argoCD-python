@@ -1,0 +1,39 @@
+name: Build and Deploy to Kubernetes
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'manifest/deployment.yaml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      with:
+        token: ${{ secrets.PAT }} 
+
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKER_HUB_USERNAME }}
+        password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+    - name: Build and push Docker image
+      run: |
+        docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/flask-app:${{ github.run_number }} .
+        docker push ${{ secrets.DOCKER_HUB_USERNAME }}/flask-app:${{ github.run_number }}
+
+    - name: Update Kubernetes manifest
+      run: |
+        sed -i 's#image: .*#image: ${{ secrets.DOCKER_HUB_USERNAME }}/flask-app:${{ github.run_number }}#g' manifest/deployment.yaml
+        git config --local user.email "${{ secrets.EMAIL_ADDRESS }}"  
+        git config --local user.name "${{ github.actor }}"  
+        
+        git add manifest/deployment.yaml
+        git commit -m "Update image version to workflow #${{ github.run_number }}"
+        git push https://x-access-token:${{ secrets.PAT }}@github.com/nakzoo/argoCD-python.git main   

@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flaskapp
+  labels:
+    app:  flask 
+spec:
+  template:
+    metadata:
+      name: flaskapp
+      labels:
+        app: flask 
+    spec:
+      containers:
+        - name: myfirstpod
+          image: hbayraktar/flask-app:20         # değiştir
+          ports:
+            - containerPort: 5000
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flask 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flaskservice
+spec:
+  selector:
+    app: flask
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 5000
+  type: LoadBalancer
