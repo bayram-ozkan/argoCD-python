@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: myfirstpod
-          image: hbayraktar/flask-app:20         # değiştir
+          image: bayramozkan/flask-app:1.0         # değiştir
           ports:
             - containerPort: 5000
   replicas: 1
