@@ -3,23 +3,22 @@ kind: Deployment
 metadata:
   name: flaskapp
   labels:
-    app:  flask 
+    app: flask 
 spec:
-  template:
-    metadata:
-      name: flaskapp
-      labels:
-        app: flask 
-    spec:
-      containers:
-        - name: myfirstpod
-          image: bayramozkan/flask-app:20.0   # değiştir
-          ports:
-            - containerPort: 5000
   replicas: 1
   selector:
     matchLabels:
       app: flask 
+  template:
+    metadata:
+      labels:
+        app: flask 
+    spec:
+      containers:
+      - name: flaskapp
+        image: bayramozkan/argocd-python:v1.0
+        ports:
+        - containerPort: 5000
 ---
 apiVersion: v1
 kind: Service
@@ -29,8 +28,6 @@ spec:
   selector:
     app: flask
   ports:
-    - name: http
-      protocol: TCP
-      port: 80
+    - port: 80
       targetPort: 5000
   type: LoadBalancer
