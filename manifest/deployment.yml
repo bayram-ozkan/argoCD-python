@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: flaskapp
-        image: bayramozkan/flask-app:8
+        image: bayramozkan/flask-app:9
         ports:
         - containerPort: 5000
 ---
