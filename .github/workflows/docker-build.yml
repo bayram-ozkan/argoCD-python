@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths-ignore:
-      - 'manifest/deployment.yaml'
+      - 'manifest/deployment.yml'
 
 jobs:
   build:
@@ -30,10 +30,10 @@ jobs:
 
     - name: Update Kubernetes manifest
       run: |
-        sed -i 's#image: .*#image: ${{ secrets.DOCKER_HUB_USERNAME }}/flask-app:${{ github.run_number }}#g' manifest/deployment.yaml
+        sed -i 's#image: .*#image: ${{ secrets.DOCKER_HUB_USERNAME }}/flask-app:${{ github.run_number }}#g' manifest/deployment.yml
         git config --local user.email "${{ secrets.EMAIL_ADDRESS }}"  
         git config --local user.name "${{ github.actor }}"  
         
-        git add manifest/deployment.yaml
+        git add manifest/deployment.yml
         git commit -m "Update image version to workflow #${{ github.run_number }}"
         git push https://x-access-token:${{ secrets.PAT }}@github.com/nakzoo/argocd-python.git main   
