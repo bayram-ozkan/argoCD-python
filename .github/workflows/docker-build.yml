@@ -36,4 +36,4 @@ jobs:
         
         git add manifest/deployment.yaml
         git commit -m "Update image version to workflow #${{ github.run_number }}"
-        git push https://x-access-token:${{ secrets.PAT }}@github.com/nakzoo/.git main   
+        git push https://x-access-token:${{ secrets.PAT }}@github.com/nakzoo/argocd-python.git main   
